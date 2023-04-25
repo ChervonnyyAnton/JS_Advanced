@@ -1,1 +1,2 @@
-# JS_Advanced
+# JS_Advanced training
+For educational purposes only
