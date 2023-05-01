@@ -1,9 +1,7 @@
 'use strict'
 
-let weatherMap = new Map([
-	['London', 10],
-	['Moscow', 7],
-	['Paris', 14],
-]);
+function getRandomNumber(min, max) {
+	return Math.floor(Math.random() * (max - min + 1) + min);
+}
 
-weatherMap = [...weatherMap].map(el => el.reverse());
+console.log(getRandomNumber(1, 20));
