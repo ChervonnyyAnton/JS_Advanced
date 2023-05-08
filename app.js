@@ -1,24 +1,17 @@
 'use strict'
 
-const userOne = {
-  name: 'Vasia',
-  birthday: '12/23/2022',
+function timer(sec){
+	let countdown = sec * 1000;
+	console.log(`${sec} seconds timer start!`);
+	const interval = setInterval(() => {
+		countdown -= 1000;
+		console.log(`${countdown / 1000} seconds left`);
+	}, 999);
+	setTimeout(() => {
+		clearInterval(interval);
+		console.log("Your pizza is ready!");
+		console.log(`${sec} seconds timer is over!`);
+  }, countdown);
 }
 
-const userTwo = {
-  name: 'Oleg',
-  birthday: '05/05/2023'
-}
-
-function isBirthdayToday(user){
-  const today = new Date();
-  const birthday = new Date(user.birthday);
-  if (today.getMonth() !== birthday.getMonth()) {
-    return false;
-  }
-
-  return today.getDate() === birthday.getDate();
-}
-
-console.log(isBirthdayToday(userOne));
-console.log(isBirthdayToday(userTwo));
+timer(15);
