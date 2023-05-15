@@ -1,55 +1,45 @@
 'use strict'
 
-let count = 0;
-let index = 0;
+class User {
+	#login;
+	#_password;
 
-const Product = function(name, amount){
-	count++;
-	this.id = count;
-	this.name = name;
-	this.amount = amount;
-}
-
-const Basket = function(){
-	index++;
-	this.id = index;
-	this.products = [];
-}
-
-Basket.prototype.addProduct = function(product){
-	if(this.products.find(p => p.id === product.id)){
-		p.increaseBy(1);
+	constructor(login, password) {
+		this.#login = login;
+		this.#password = password;
 	}
 
-	this.products.push(product);
+	set #password(pass) {
+		this.#_password = pass.split('').reverse().join('');
+	}
+
+	get #password() {
+		return this.#_password.split('').reverse().join('');
+	}
+
+	get login() {
+		return this.#login;
+	}
+
+	checkPassword(pass) {
+		return this.#password === pass;
+	}
+
+	changePassword(oldPass, newPass) {
+		if(!this.checkPassword(oldPass)) {
+			return false;
+		}
+
+		this.#password = newPass;
+		return true;
+	}
 }
 
-Basket.prototype.decrease = function (id) {
-  this.products = this.products
-  	.map((p) => {
-    	if (p.id === id) {
-      		p.amount--;
-    	}
-    	return p;
-  	})
-	.filter(p => p.amount > 0);
-};
+const user = new User("a@a.ru", 'password');
 
-Basket.prototype.increase = function (id) {
-  this.products = this.products.map(p => {
-	if(p.id === id) {
-		p.amount++;
-	}
-	return p;
-  })
-};
-
-const bread = new Product('Bread', 1);
-const newBasket = new Basket();
-
-newBasket.addProduct(bread);
-newBasket.increase(1);
-newBasket.decrease(1);
-newBasket.decrease(1);
-
-console.log(newBasket);
+console.log(user);
+console.log(user.login);
+console.log(user.checkPassword('123'));
+console.log(user.checkPassword("password"));
+console.log(user.changePassword("password","123"));
+console.log(user.checkPassword("123"));
