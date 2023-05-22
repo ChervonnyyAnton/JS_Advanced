@@ -1,45 +1,60 @@
 'use strict'
 
-class User {
-	#login;
-	#_password;
+/*
+	Сделать класс врага со здоровьем и методом получения урона.
+	Сделать клаcc меча, который имеет силу и метод нанесения урона.
+	Сделать класс орка, который в 50% случаев не получает урон.
+*/
 
-	constructor(login, password) {
-		this.#login = login;
-		this.#password = password;
+class Enemy {
+	health;
+	constructor(health){
+		this.health = health;
 	}
 
-	set #password(pass) {
-		this.#_password = pass.split('').reverse().join('');
-	}
-
-	get #password() {
-		return this.#_password.split('').reverse().join('');
-	}
-
-	get login() {
-		return this.#login;
-	}
-
-	checkPassword(pass) {
-		return this.#password === pass;
-	}
-
-	changePassword(oldPass, newPass) {
-		if(!this.checkPassword(oldPass)) {
-			return false;
-		}
-
-		this.#password = newPass;
-		return true;
+	receiveDamage(damage){
+		this.health = this.health - damage;
+		console.log(this.health);
 	}
 }
 
-const user = new User("a@a.ru", 'password');
+class Weapon {
+	#damage;
+	constructor(damage){
+		this.#damage = damage;
+	}
 
-console.log(user);
-console.log(user.login);
-console.log(user.checkPassword('123'));
-console.log(user.checkPassword("password"));
-console.log(user.changePassword("password","123"));
-console.log(user.checkPassword("123"));
+	dealDamageTo(enemy) {
+		enemy.receiveDamage(this.#damage);
+	}
+}
+
+class Orc extends Enemy {
+	constructor(health){
+		super(health);
+	}
+
+	receiveDamage(damage) {
+		if(Math.random() > 0.5){
+			this.health = this.health - damage;
+		}
+		console.log(this.health);
+	}
+}
+
+const AngryOrk = new Orc(100);
+const Sword = new Weapon(10);
+
+Sword.dealDamageTo(AngryOrk);
+Sword.dealDamageTo(AngryOrk);
+Sword.dealDamageTo(AngryOrk);
+Sword.dealDamageTo(AngryOrk);
+Sword.dealDamageTo(AngryOrk);
+Sword.dealDamageTo(AngryOrk);
+Sword.dealDamageTo(AngryOrk);
+Sword.dealDamageTo(AngryOrk);
+Sword.dealDamageTo(AngryOrk);
+Sword.dealDamageTo(AngryOrk);
+Sword.dealDamageTo(AngryOrk);
+Sword.dealDamageTo(AngryOrk);
+Sword.dealDamageTo(AngryOrk);
