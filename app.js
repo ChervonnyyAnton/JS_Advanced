@@ -1,16 +1,25 @@
 'use strict'
 
 /*
-	Получить среднюю цену 30 товаров из API
+	сделать запрос на https://dummyjson.com/products/categories ,
+	получить список категориц и отобразить <select> выбора категорий	
 */
 
-const request = new XMLHttpRequest();
-request.open('GET', 'https://dummyjson.com/products');
-request.send();
+const list = document.getElementById('categories');
 
-request.addEventListener('load', function() {
-	const { products } = JSON.parse(this.responseText);
-	console.log(products);
-	const sum = products.reduce((acc, prod) => acc += prod.price, 0);
-	console.log(sum / products.length);
-});
+function createSelect(options){
+	const element = document.querySelector('.filter');
+	element.innerHTML = `<select>
+		${options.map(e => `<option value='${e}'>${e}</option>`)}
+	</select>`
+}
+
+function getCategories(){
+	fetch("https://dummyjson.com/products/categories")
+    .then(res => res.json())
+    .then(data => createSelect(data))
+    .catch((err) => console.error(err))
+    .finally(() => console.log("request categories completed"));
+};
+
+getCategories();
