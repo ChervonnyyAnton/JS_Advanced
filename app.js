@@ -1,33 +1,40 @@
 "use strict";
 
-/*
-fetch("https://dummyjson.com/products")
-  .then((response) => response.json())
-  .then(({ products }) => {
-    console.log(products);
-    return fetch(`https://dummyjson.com/products/${products[0].id}`);
-  })
-  .then((response) => response.json())
-  .then((data) => {
-    console.log(data);
-  })
-  .catch((error) => console.log(error))
-  .finally(() => console.log("completed"));
-*/
+const page = {
+  element: document.getElementById("list"),
+};
 
-function createSelect(array) {
-  const element = document.querySelector(".filter");
+const baseUrl = "https://dummyjson.com";
+
+function createSelect(element, array) {
   element.innerHTML = `<select>
-		${array.map((el) => `<option value= ${el}>${el}</option>`)}
+		${array.map((el) => `<option value= ${el}>${el}</option>`).join("")}
 	</select>`;
 }
 
+function createError(element, error) {
+  element.innerHTML = `<div>
+        <span> There is </span>
+        <span> ${error} </span>
+	    </div>`;
+}
+
+function getData(url, error) {
+  return fetch(url).then((response) => {
+    if (!response.ok) {
+      throw new Error(`${response.status}`);
+    }
+    return response.json();
+  });
+}
+
 function getCategories() {
-  fetch("https://dummyjson.com/products/categories")
-    .then((response) => response.json())
-    .then((data) => createSelect(data))
-    .catch((error) => console.log(error))
+  getData(`${baseUrl}/products/categories`, "Can not get products!")
+    .then((data) => createSelect(page.element, data))
+    .catch((error) => createError(page.element, error))
     .finally(() => console.log("complete"));
 }
 
-getCategories();
+document.addEventListener("DOMContentLoaded", function () {
+  getCategories();
+});
