@@ -1,40 +1,29 @@
 "use strict";
 
-const page = {
-  element: document.getElementById("list"),
-};
+const prom = new Promise((resolve, reject) => {
+  if (new Date() < new Date("01/01/2022")) {
+    reject(new Error("Error"));
+  }
+  resolve("Success");
+});
 
-const baseUrl = "https://dummyjson.com";
+prom.then((data) => console.log(data)).catch((error) => console.log(error));
 
-function createSelect(element, array) {
-  element.innerHTML = `<select>
-		${array.map((el) => `<option value= ${el}>${el}</option>`).join("")}
-	</select>`;
-}
-
-function createError(element, error) {
-  element.innerHTML = `<div>
-        <span> There is </span>
-        <span> ${error} </span>
-	    </div>`;
-}
-
-function getData(url, error) {
-  return fetch(url).then((response) => {
-    if (!response.ok) {
-      throw new Error(`${response.status}`);
-    }
-    return response.json();
+function timeout(seconds) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve();
+    }, seconds * 1000);
   });
 }
 
-function getCategories() {
-  getData(`${baseUrl}/products/categories`, "Can not get products!")
-    .then((data) => createSelect(page.element, data))
-    .catch((error) => createError(page.element, error))
-    .finally(() => console.log("complete"));
-}
-
-document.addEventListener("DOMContentLoaded", function () {
-  getCategories();
-});
+timeout(1)
+  .then(() => {
+    console.log("timeout works");
+  })
+  .then(() => {
+    console.log("timeout works");
+  })
+  .then(() => {
+    console.log("timeout works");
+  });
