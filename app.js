@@ -1,31 +1,42 @@
 "use strict";
 
-const goodUrl = "https://boredapi.com/api/activity";
-const badUrl = "https://dummyjson.com/productss/";
+const wrapper = document.querySelector(".wrapper");
+const url = "https://boredapi.com/api/activity";
 
-const credentials = {
-  username: "kminchelle",
-  password: "0lelplR",
-};
-
-const headers = {
-  "Content-Type": "application/json",
-};
-
-const method = "POST";
-
-function request(method, headers, body) {
-  return {
-    method: method,
-    headers: headers,
-    body: JSON.stringify(body),
-  };
+function throwDice_D(max) {
+  const result = Math.floor(Math.random() * max) + 1;
+  return result;
 }
 
-async function main() {
-  const response = await fetch(goodUrl, request(method, headers, credentials));
-  const data = await response.json();
-  console.log(data);
+async function getActivity() {
+  const result = await fetch(url);
+  return result.json();
 }
 
-main();
+async function generate() {
+  console.log(
+    `
+    Roll the dice!
+    Your random number is ${throwDice_D(20)}
+    The difficulty is ${throwDice_D(20)}
+    You decide your destiny!
+    `
+  );
+
+  try {
+    wrapper.innerHTML = '';
+    const data = await Promise.all([
+      getActivity(),
+      getActivity(),
+      getActivity(),
+    ]);
+    console.log(data);
+    for (const el of data) {
+      const element = document.createElement("div");
+      element.innerHTML = `${el.activity}`;
+      wrapper.appendChild(element);
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}
